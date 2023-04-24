@@ -11,6 +11,39 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringBeanTest {
 
+    // 配置 bean 通过继承
+    @Test
+    public void setBeanByExtends() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans.xml");
+
+        Monster monster11 = ioc.getBean("monster11", Monster.class);
+        System.out.println("monster11= " + monster11);
+
+        Monster monster13 = ioc.getBean("monster13", Monster.class);
+        System.out.println("monster13= " + monster13);
+    }
+
+    // 通过FactoryBean获取 bean
+    @Test
+    public void setBeanByFactoryBean() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans.xml");
+
+        Monster my_monster05 = ioc.getBean("my_monster05", Monster.class);
+        System.out.println("my_monster05= " + my_monster05);
+    }
+
+    // 通过实例工厂获取 bean
+    @Test
+    public void setBeanByInstanceFactory() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans.xml");
+
+        Monster my_monster02 = ioc.getBean("my_monster02", Monster.class);
+        System.out.println("my_monster02= " + my_monster02);
+    }
+
     // 通过静态工厂来获取一个 bean
     @Test
     public void setBeanByStaticFactory() {

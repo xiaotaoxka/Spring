@@ -4,6 +4,41 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!--配置一个 Monster 对象-->
+    <bean id="monster10" class="com.wztedu.spring.bean.Monster">
+        <property name="monsterId" value="10"/>
+        <property name="name" value="蜈蚣精"/>
+        <property name="skill" value="蜇人"/>
+    </bean>
+
+    <!--
+    1. 配置 Monster 对象
+    2. 但是这个对象的属性值和 id="monster10"对象属性一样
+    3. parent="monster10" 指定当前这个配置的对象的属性值从id="monster10"的对象继承
+    -->
+    <bean id="monster11" class="com.wztedu.spring.bean.Monster" parent="monster10"/>
+
+
+    <!--配置Monster对象, 通过FactoryBean获取
+    1. class 指定使用的 FactoryBean
+    2. key 表示就是 MyFactoryBean 属性 key
+    3. value 就是你要获得的对象对应的 key
+    -->
+    <bean id="my_monster05" class="com.wztedu.spring.factory.MyFactionBean">
+        <property name="key" value="monster04"/>
+    </bean>
+
+    <!--配置一个实例工厂对象-->
+    <bean class="com.wztedu.spring.factory.MyInstanceFactory" id="myInstanceFactory"/>
+    <!--配置 Monster 对象, 通过实例工厂
+    1. factory-bean 指定使用哪个实例工厂对象返回bean
+    2. factory-method 指定使用实例工厂对象的哪个方法返回 bean
+    3. constructor-arg value="monster03" 指定使用实例工厂中的哪一个 monster
+    -->
+    <bean id="my_monster02" factory-bean="myInstanceFactory" factory-method="getMonster">
+        <constructor-arg value="monster03"/>
+    </bean>
+
     <!--配置一个 Monster 对象, 通过静态工厂获取
     1. 通过静态工厂获取/配置bean
     2. class 是静态工厂类的全路径
