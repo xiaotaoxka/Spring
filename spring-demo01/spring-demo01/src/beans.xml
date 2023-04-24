@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--配置一个 Monster 对象, 通过静态工厂获取
+    1. 通过静态工厂获取/配置bean
+    2. class 是静态工厂类的全路径
+    3. factory-method 表示是指定静态工厂类的哪个方法返回对象
+    4. constructor-arg value="monster02" value是指定要返回静态工厂的哪个对象
+    -->
+    <bean id="my_monster01" class="com.wztedu.spring.factory.MyStaticFactory" factory-method="getMonster">
+        <constructor-arg value="monster02"/>
+    </bean>
+
+    <!--配置一个 Dept对象-->
+    <bean class="com.wztedu.spring.bean.Dept" id="dept"/>
+
+    <bean class="com.wztedu.spring.bean.Emp" id="emp">
+        <property name="name" value="xiaotao"/>
+        <property name="dept" ref="dept"/>
+        <property name="dept.name" value="Java开发部门"/>
+    </bean>
+
+
+    <!--定义一个util:list 并且指定了 id 可以达到数据复用的效果-->
+    <util:list id="myBookList">
+        <value>三国演义</value>
+        <value>红楼梦</value>
+        <value>西游记</value>
+        <value>水浒传</value>
+    </util:list>
+
+    <!--配置 BookStore 对象-->
+    <bean class="com.wztedu.spring.bean.BookStore" id="bookStore">
+        <property name="bookList" ref="myBookList">
+        </property>
+    </bean>
+
+
+    <!--配置 Master对象-->
+    <bean class="com.wztedu.spring.bean.Master" id="master">
+        <property name="name" value="太上老君"/>
+        <!--给 list 属性赋值-->
+        <property name="monsterList">
+            <list>
+                <!--引用的方式-->
+                <ref bean="monster03"/>
+                <ref bean="monster04"/>
+                <!--内部bean-->
+                <bean class="com.wztedu.spring.bean.Monster">
+                    <property name="name" value="老鼠精"/>
+                    <property name="monsterId" value="10000"/>
+                    <property name="skill" value="吃粮食"/>
+                </bean>
+            </list>
+        </property>
+        <!--给map属性赋值-->
+        <property name="monsterMap">
+            <map>
+                <entry>
+                    <key>
+                        <value>monster03</value>
+                    </key>
+                    <ref bean="monster03"/>
+                </entry>
+                <entry>
+                    <key>
+                        <value>monster04</value>
+                    </key>
+                    <ref bean="monster04"/>
+                </entry>
+            </map>
+        </property>
+        <!--给set属性赋值-->
+        <property name="monsterSet">
+            <set>
+                <ref bean="monster03"/>
+                <ref bean="monster06"/>
+                <bean class="com.wztedu.spring.bean.Monster">
+                    <property name="name" value="金角大王"/>
+                    <property name="skill" value="吐水"/>
+                    <property name="monsterId" value="888"/>
+                </bean>
+            </set>
+        </property>
+        <!--给数组赋值
+        array 标签中使用的是 value 还是 bean, ref ... 要根据自己的业务决定
+        -->
+        <property name="monsterName">
+            <array>
+                <value>小妖怪</value>
+                <value>大妖怪</value>
+                <value>老妖怪</value>
+            </array>
+        </property>
+        <!--给 Properties属性赋值-->
+        <property name="pros">
+            <props>
+                <prop key="username">root</prop>
+                <prop key="password">15610906711</prop>
+                <prop key="ip">127.0.0.1</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <!--配置MemberDAOImpl对象,使用内部 bean 的方式-->
+    <bean class="com.wztedu.spring.service.MemberServiceImpl" id="memberService2">
+        <property name="memberDAO">
+            <bean class="com.wztedu.spring.dao.MemberDAOImpl" id="memberDAO2"/>
+        </property>
+    </bean>
+
+
+    <!--配置MemberDAOImpl对象-->
+    <bean class="com.wztedu.spring.dao.MemberDAOImpl" id="memberDAO">
+
+    </bean>
+
+    <!--
+    配置MemberServiceImpl对象
+    1. ref="memberDAO" 表示，MemberServiceImpl对象属性memberDAO引用的对象是 id="memberDAO" 的对象
+    2. 这里就体现出 Spring 容器的依赖注入
+    -->
+    <bean class="com.wztedu.spring.service.MemberServiceImpl" id="memberService">
+        <property name="memberDAO" ref="memberDAO"/>
+    </bean>
+
+
+    <!--
+    配置Monster对象，并且指定构造器赋值
+    1. constructor-arg 标签可以指定使用构造器的参数
+    2. index 表示构造器的第几个参数 从0开始计算
+    3. 除了可以通过 index 还可以通过 name / type 来指定参数方式
+    -->
+    <bean id="monster03" class="com.wztedu.spring.bean.Monster">
+        <constructor-arg value="200" index="0"/>
+        <constructor-arg value="白骨精" index="1"/>
+        <constructor-arg value="吸血" index="2"/>
+    </bean>
+
+
+    <bean id="monster04" class="com.wztedu.spring.bean.Monster">
+        <constructor-arg name="monsterId" value="200"/>
+        <constructor-arg name="name" value="白骨精"/>
+        <constructor-arg name="skill" value="吸血"/>
+    </bean>
+
+    <bean id="monster05" class="com.wztedu.spring.bean.Monster">
+        <constructor-arg value="300" type="java.lang.Integer"/>
+        <constructor-arg value="白骨精" type="java.lang.String"/>
+        <constructor-arg value="吸血" type="java.lang.String"/>
+    </bean>
+
+    <!--通过p名称空间来配置Bean-->
+    <bean id="monster06" class="com.wztedu.spring.bean.Monster"
+          p:monsterId="500"
+          p:name="红孩儿"
+          p:skill="吐火"
+    />
+
+
+    <!--配置Monster,通过类型来获取-->
+    <!--<bean class="com.wztedu.spring.bean.Monster">-->
+    <!--    &lt;!&ndash;-->
+    <!--    1. 当我们给某个bean对象设置属性的时候-->
+    <!--    2. 底层是使用对应的 setter方法完成的, 比如 setName()-->
+    <!--    3. 如果没有这个方法, 就会报错-->
+    <!--    &ndash;&gt;-->
+    <!--    <property name="monsterId" value="100"/>-->
+    <!--    <property name="name" value="小涛"/>-->
+    <!--    <property name="skill" value="无敌风火轮"/>-->
+    <!--</bean>-->
+
+
+    <!--
+        1. 配置 Monster 对象
+        2. 在 beans 中可以配置多个 bean
+        3. bean 表示就是一个 Java 对象
+        4. class 属性是用于指定类的全路径
+        5. id 属性表示该 Java 对象 在 Spring 容器中的 id ，通过 id 可以获得对象
+        6. <property name="monsterId" value="100"/> 给该对象的属性赋值
+    -->
+    <!--<bean class="com.wztedu.spring.bean.Monster">-->
+    <!--    <property name="monsterId" value="100"/>-->
+    <!--    <property name="name" value="小涛"/>-->
+    <!--    <property name="skill" value="无敌风火轮"/>-->
+    <!--</bean>-->
+
+    <!--<bean class="com.wztedu.spring.bean.Monster">-->
+    <!--    <property name="monsterId" value="300"/>-->
+    <!--    <property name="name" value="xiaotao"/>-->
+    <!--    <property name="skill" value="wudi"/>-->
+    <!--</bean>-->
+</beans>
