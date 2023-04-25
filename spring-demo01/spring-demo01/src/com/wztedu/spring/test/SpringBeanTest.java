@@ -2,12 +2,48 @@ package com.wztedu.spring.test;
 
 import com.wztedu.spring.bean.*;
 import com.wztedu.spring.service.MemberServiceImpl;
+import com.wztedu.spring.web.OrderAction;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringBeanTest {
+
+    // 通过 Spring EL 对属性进行赋值
+    @Test
+    public void setBeanBySpEL() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans04.xml");
+
+        SpELBean spELBean = ioc.getBean("spELBean", SpELBean.class);
+        System.out.println("spELBean= " + spELBean);
+    }
+
+    // 通过自动装配给bean赋值
+    @Test
+    public void setBeanByAutowire() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans03.xml");
+
+        OrderAction orderAction = ioc.getBean("orderAction", OrderAction.class);
+
+        // 验证是否自动装配上 OrderAction
+        System.out.println(orderAction.getOrderService());
+
+        // 验证是否自动装配上 OrderDao
+        System.out.println(orderAction.getOrderService().getOrderDao());
+    }
+
+    // 通过属性文件给bean赋值
+    @Test
+    public void setBeanByFile() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans03.xml");
+
+        Monster monster1000 = ioc.getBean("monster1000", Monster.class);
+        System.out.println("monster1000= " + monster1000);
+    }
+
 
     @Test
     public void beanPostProcessor() {

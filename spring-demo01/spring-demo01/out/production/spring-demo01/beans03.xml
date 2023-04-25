@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--配置 OrderDao对象-->
+    <bean class="com.wztedu.spring.dao.OrderDao" id="orderDao">
+
+    </bean>
+
+    <!--配置OrderService对象
+    1. autowire="byType" 表示在创建 orderService 时
+        通过类型在给对象属性自动完成赋值/引用
+    2. 比如 OrderService 对象有private OrderDao orderDao
+    3. 就会在容器中去找有没有 OrderDao类型对象
+    4. 如果有，就会自动装配，如果是按照 byType方式来装配，这个容器中，不能有两个相同类型的对象
+    5. 如果你的对象没有属性，autowire就没有必要写
+    -->
+    <bean autowire="byType" class="com.wztedu.spring.service.OrderService" id="orderService">
+
+    </bean>
+
+    <!--配置 OrderAction-->
+    <bean autowire="byType" class="com.wztedu.spring.web.OrderAction" id="orderAction">
+
+    </bean>
+
+    <!--指定属性文件
+    location="classpath:my.properties" 表示指定文件的位置
+    -->
+    <context:property-placeholder location="classpath:my.properties"/>
+    <!--配置 Monster 对象
+    1. 通过属性文件给 monster 对象的属性赋值
+    -->
+    <bean class="com.wztedu.spring.bean.Monster" id="monster1000">
+        <property name="monsterId" value="${monsterId}"/>
+        <property name="skill" value="${skill}"/>
+        <property name="name" value="${name}"/>
+    </bean>
+</beans>
