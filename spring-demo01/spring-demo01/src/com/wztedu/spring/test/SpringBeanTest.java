@@ -9,6 +9,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringBeanTest {
 
+    @Test
+    public void beanPostProcessor() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans02.xml");
+
+        House house = ioc.getBean("house", House.class);
+        House house02 = ioc.getBean("house02", House.class);
+        System.out.println("使用house= " + house);
+        System.out.println("使用house02= " + house02);
+    }
+
     // 测试 bean 的生命周期
     @Test
     public void testBeanLife() {

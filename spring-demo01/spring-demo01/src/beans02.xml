@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--配置 House 对象-->
+    <bean class="com.wztedu.spring.bean.House" id="house" init-method="init" destroy-method="destory">
+        <property name="name" value="大豪宅"/>
+    </bean>
+
+    <bean class="com.wztedu.spring.bean.House" id="house02" init-method="init" destroy-method="destory">
+        <property name="name" value="香港豪宅"/>
+    </bean>
+
+    <!--配置后置处理器对象
+    1. 当我们在beans02.xml 容器配置文件 配置了 MyBeanPostProcessor
+    2. 这时后置处理器，就会作用在该容器中的创建的bean对象
+    3. 已经是针对所有对象编程 -> 切面编程
+    -->
+    <bean class="com.wztedu.spring.bean.MyBeanPostProcessor" id="myBeanPostProcessor">
+
+    </bean>
+
+</beans>

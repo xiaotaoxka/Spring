@@ -27,4 +27,11 @@ public class House {
     public void destory() {
         System.out.println("House destory()..");
     }
+
+    @Override
+    public String toString() {
+        return "House{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
