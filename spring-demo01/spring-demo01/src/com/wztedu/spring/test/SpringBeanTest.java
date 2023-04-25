@@ -1,15 +1,50 @@
 package com.wztedu.spring.test;
 
-import com.wztedu.spring.bean.BookStore;
-import com.wztedu.spring.bean.Emp;
-import com.wztedu.spring.bean.Master;
-import com.wztedu.spring.bean.Monster;
+import com.wztedu.spring.bean.*;
 import com.wztedu.spring.service.MemberServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringBeanTest {
+
+    // 测试 bean 的生命周期
+    @Test
+    public void testBeanLife() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans.xml");
+
+        House house = ioc.getBean("house", House.class);
+        System.out.println("使用 house " + house);
+
+        // 关闭容器
+        ((ClassPathXmlApplicationContext) ioc).close();
+    }
+
+    // 测试 Scop
+    @Test
+    public void testBeanScop() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans.xml");
+
+        Cat cat = ioc.getBean("cat", Cat.class);
+        Cat cat2 = ioc.getBean("cat", Cat.class);
+        Cat cat3 = ioc.getBean("cat", Cat.class);
+
+        System.out.println("cat= " + cat);
+        System.out.println("cat2= " + cat2);
+        System.out.println("cat3= " + cat3);
+    }
+
+    // 测试 bean 创建顺序
+    @Test
+    public void testBeanByCreate() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans.xml");
+
+        System.out.println("ok~~~");
+    }
 
     // 配置 bean 通过继承
     @Test

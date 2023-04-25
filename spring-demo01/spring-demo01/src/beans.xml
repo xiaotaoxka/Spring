@@ -4,6 +4,45 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!--配置 House 对象演示整个 Bean 的生命周期
+    1. init-method="init" 指定 bean 的初始化方法, 在setter方法后执行
+    2. 方法执行的时机, 由spring 容器来控制
+    3. destroy-method="destory" 指定 bean 的销毁方法, 在容器关闭的时候执行
+    -->
+    <bean class="com.wztedu.spring.bean.House" id="house" init-method="init" destroy-method="destory">
+        <property name="name" value="北京豪宅"/>
+    </bean>
+
+    <!--配置 Cat 对象
+    1. 在默认情况下 scope="singleton" 是单例
+    2. 即ioc容器中只会有一个这样的bean对象
+    3. 当程序员执行 getBean 时, 返回的是同一个对象
+    4. 如果我们希望每次返回一个新的Bean对象, 则可以 scope="prototype"
+    -->
+    <bean id="cat" class="com.wztedu.spring.bean.Cat" scope="prototype">
+        <property name="id" value="100"/>
+        <property name="name" value="小花猫"/>
+    </bean>
+
+    <!--懒加载, 只有在执行 getBean的方法时才会创建对象, 不会提前创建-->
+    <bean id="cat1" class="com.wztedu.spring.bean.Cat" scope="singleton" lazy-init="true">
+        <property name="id" value="100"/>
+        <property name="name" value="小花猫"/>
+    </bean>
+
+    <!--测试bean的创建顺序
+    1. 在默认情况下, bean的创建顺序是按照配置顺序来执行的
+    2. 但是如果我们增加了 depends-on="department01" 这时就会先去创建 id="department01" 的对象
+
+    -->
+    <bean id="student01" class="com.wztedu.spring.bean.Student" depends-on="department01">
+
+    </bean>
+
+    <bean id="department01" class="com.wztedu.spring.bean.Department">
+
+    </bean>
+
     <!--配置一个 Monster 对象
     1. 如果bean指定了 abstract="true", 表示该bean对象, 是用于被继承
     2. 本身这个bean就不能被获取/实例化

@@ -12,6 +12,10 @@ public class MemberServiceImpl {
 
     private MemberDAOImpl memberDAO;
 
+    public MemberServiceImpl() {
+
+    }
+
     public MemberDAOImpl getMemberDAO() {
         return memberDAO;
     }
