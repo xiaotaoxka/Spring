@@ -1,6 +1,10 @@
 package com.wztedu.spring.test;
 
 import com.wztedu.spring.bean.*;
+import com.wztedu.spring.component.MyComponent;
+import com.wztedu.spring.component.UserAction;
+import com.wztedu.spring.component.UserDao;
+import com.wztedu.spring.component.UserService;
 import com.wztedu.spring.service.MemberServiceImpl;
 import com.wztedu.spring.web.OrderAction;
 import org.junit.jupiter.api.Test;
@@ -8,6 +12,28 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringBeanTest {
+
+    // 通过注解来配置bean
+    @Test
+    public void setBeanByAnnotation() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans05.xml");
+
+        UserDao userDao = ioc.getBean(UserDao.class);
+        // 在默认情况下，注解标识的类创建对象后，在容器中，id为类名的首字母小写
+        UserDao wztDao = ioc.getBean("wztDao", UserDao.class);
+        UserService userService = ioc.getBean(UserService.class);
+        UserAction userAction = ioc.getBean(UserAction.class);
+        MyComponent myComponent = ioc.getBean(MyComponent.class);
+
+        System.out.println("userDao= " + userDao);
+        System.out.println("wztDao= " + wztDao);
+        System.out.println("userService= " + userService);
+        System.out.println("userAction= " + userAction);
+        System.out.println("myComponent= " + myComponent);
+
+        System.out.println("ok~~~");
+    }
 
     // 通过 Spring EL 对属性进行赋值
     @Test
