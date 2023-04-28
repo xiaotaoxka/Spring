@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
  * @Service 标识类是一个 service
  */
 
-@Service
+@Service()
 public class UserService {
+
+    public void hi() {
+        System.out.println("UserService hi()~");
+    }
 }

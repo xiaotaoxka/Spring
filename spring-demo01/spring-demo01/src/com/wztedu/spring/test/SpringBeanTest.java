@@ -13,6 +13,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringBeanTest {
 
+    @Test
+    public void setProByAutowired() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans06.xml");
+
+        UserAction userAction = ioc.getBean("userAction", UserAction.class);
+        UserService userService = ioc.getBean("userService", UserService.class);
+        System.out.println("userService= " + userService);
+        // System.out.println("userAction= " + userAction);
+        userAction.sayOk();
+    }
+
     // 通过注解来配置bean
     @Test
     public void setBeanByAnnotation() {
