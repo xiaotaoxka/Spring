@@ -3,6 +3,12 @@ package com.wztedu.spring.test;
 public class Yest03 {
     public static void main(String[] args) {
 
+        int[] a = new int[3];
+
+        for (int i = 0; i < a.length; i++) {
+            System.out.println(a[i]);
+        }
+
         int[][] arr = {
                 {1, 2, 3, 4, 5},
                 {3, 4, 5, 4},

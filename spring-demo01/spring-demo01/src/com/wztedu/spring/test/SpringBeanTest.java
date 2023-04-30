@@ -5,6 +5,7 @@ import com.wztedu.spring.component.MyComponent;
 import com.wztedu.spring.component.UserAction;
 import com.wztedu.spring.component.UserDao;
 import com.wztedu.spring.component.UserService;
+import com.wztedu.spring.depinjection.PhoneService;
 import com.wztedu.spring.service.MemberServiceImpl;
 import com.wztedu.spring.web.OrderAction;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringBeanTest {
+
+    // 通过泛型依赖配置bean
+    @Test
+    public void setProByDependencyInjection() {
+        ApplicationContext ioc =
+                new ClassPathXmlApplicationContext("beans07.xml");
+
+        // System.out.println("ok~~~");
+
+        PhoneService phoneService = ioc.getBean("phoneService", PhoneService.class);
+        phoneService.save();
+    }
 
     @Test
     public void setProByAutowired() {
